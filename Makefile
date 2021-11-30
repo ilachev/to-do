@@ -45,4 +45,4 @@ api-migrations:
 	docker-compose run --rm api-php-cli bin/console doctrine:migrations:migrate --no-interaction
 
 api-fixtures:
-	docker-compose run --rm api-php-cli bin/console fixtures:load
+	docker-compose run --rm api-php-cli bin/console doctrine:fixtures:load
