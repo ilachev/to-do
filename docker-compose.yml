@@ -74,6 +74,37 @@ services:
         ports:
             - "54321:5432"
 
+    frontend:
+        build:
+            context: frontend/docker/development/nginx
+        networks:
+            - traefik-public
+            - default
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=traefik-public
+            - traefik.http.routers.frontend.rule=Host(`localhost`) || Host(`www.localhost`)
+            - traefik.http.routers.frontend.entryPoints=http
+            - traefik.http.services.frontend.loadBalancer.server.port=80
+            - traefik.http.middlewares.frontend-redirect.redirectRegex.regex=^(https?://)www.localhost/(.*)$$
+            - traefik.http.middlewares.frontend-redirect.redirectRegex.replacement=$${1}localhost/$${2}
+            - traefik.http.middlewares.frontend-redirect.redirectRegex.permanent=true
+            - traefik.http.routers.frontend.middlewares=frontend-redirect
+
+    frontend-node:
+        build:
+            context: frontend/docker/development/node
+        volumes:
+            - ./frontend:/app
+        command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && yarn serve -- --port 3000"
+        tty: true
+
+    frontend-node-cli:
+        build:
+            context: frontend/docker/development/node
+        volumes:
+            - ./frontend:/app
+
 secrets:
     api_db_password:
         file: ./docker/development/secrets/api_db_password

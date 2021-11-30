@@ -1,13 +1,13 @@
-init: init-ci
+init: init-ci frontend-ready
 init-ci: docker-down-clear \
-	api-clear  \
+	api-clear frontend-clear \
 	docker-pull docker-build docker-up \
-	api-init
+	api-init frontend-init
 up: docker-up
 down: docker-down
 restart: down up
 
-update-deps: api-composer-update restart
+update-deps: api-composer-update frontend-yarn-upgrade restart
 
 docker-up:
 	docker-compose up -d
@@ -46,3 +46,17 @@ api-migrations:
 
 api-fixtures:
 	docker-compose run --rm api-php-cli bin/console doctrine:fixtures:load --no-interaction
+
+frontend-clear:
+	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf .ready build'
+
+frontend-init: frontend-yarn-install
+
+frontend-yarn-install:
+	docker-compose run --rm frontend-node-cli yarn install
+
+frontend-yarn-upgrade:
+	docker-compose run --rm frontend-node-cli yarn upgrade
+
+frontend-ready:
+	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
