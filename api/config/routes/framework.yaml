@@ -2,12 +2,3 @@ when@dev:
     _errors:
         resource: '@FrameworkBundle/Resources/config/routing/errors.xml'
         prefix: /_error
-
-api:
-    resource: ../../src/Controller/Api/
-    prefix: /api
-    name_prefix: api.
-    trailing_slash_on_root: true
-    type: annotation
-    defaults:
-        _format: json
