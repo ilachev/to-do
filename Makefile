@@ -47,6 +47,9 @@ api-migrations:
 api-fixtures:
 	docker-compose run --rm api-php-cli bin/console doctrine:fixtures:load --no-interaction
 
+api-migrations-diff:
+	docker-compose run --rm api-php-cli bin/console doctrine:migrations:diff --no-interaction
+
 frontend-clear:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf .ready build'
 

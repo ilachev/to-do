@@ -34,7 +34,6 @@ final class Version20211130201429 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE app_todo_items DROP CONSTRAINT FK_3A529EA22A29C67B');
         $this->addSql('DROP TABLE app_todo_items');
         $this->addSql('DROP TABLE app_todo_lists');
