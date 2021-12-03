@@ -12,6 +12,7 @@ use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Component\Uid\Ulid;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 #[ORM\Entity]
 #[ORM\Table(name: 'app_todo_lists')]
 class TodoList
@@ -40,6 +41,13 @@ class TodoList
     public function getId(): Ulid
     {
         return $this->id;
+    }
+
+    public function setId(Ulid $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getTitle(): string

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Component\Uid\Ulid;
 
+/** @psalm-suppress MissingConstructor */
 #[ORM\Entity]
 #[ORM\Table(name: 'app_todo_items')]
 class TodoItem
@@ -32,6 +33,13 @@ class TodoItem
     public function getId(): Ulid
     {
         return $this->id;
+    }
+
+    public function setId(Ulid $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getList(): TodoList

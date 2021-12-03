@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<psalm
+        errorLevel="1"
+        totallyTyped="true"
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        cacheDirectory="./var/cache/.psalm"
+>
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin">
+            <containerXml>var/cache/dev/App_KernelDevDebugContainer.xml</containerXml>
+            <containerXml>var/cache/dev/App_KernelTestDebugContainer.xml</containerXml>
+        </pluginClass>
+        <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
+    </plugins>
+
+    <projectFiles>
+        <directory name="src" />
+        <directory name="tests" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="info" />
+        <MissingFile> <!-- https://github.com/psalm/psalm-plugin-symfony/issues/205 -->
+            <errorLevel type="suppress">
+                <file name="config/preload.php" />
+                <file name="tests/bootstrap.php" />
+            </errorLevel>
+        </MissingFile>
+        <PropertyNotSetInConstructor errorLevel="info" />
+        <MissingConstructor errorLevel="info" />
+    </issueHandlers>
+
+    <extraFiles>
+        <directory name="var/cache/dev/Symfony/Config" /> <!-- https://github.com/psalm/psalm-plugin-symfony/issues/201 -->
+    </extraFiles>
+</psalm>
