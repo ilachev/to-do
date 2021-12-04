@@ -10,6 +10,10 @@ if (file_exists(dirname(__DIR__).'/config/bootstrap.php')) {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 }
 
+/**
+ * @return void
+ * @throws Exception
+ */
 function bootstrap(): void
 {
     $kernel = new \App\Kernel('test', true);
@@ -37,8 +41,10 @@ function bootstrap(): void
         '--no-interaction' => '1',
     ]));
 
-//    $kernel->getContainer()->get('doctrine')->getConnection()->executeQuery('CREATE TABLE test (test VARCHAR(10))');
     $kernel->shutdown();
 }
 
-bootstrap();
+try {
+    bootstrap();
+} catch (Exception $e) {
+}
