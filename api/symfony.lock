@@ -255,6 +255,9 @@
     "sebastian/version": {
         "version": "3.0.2"
     },
+    "symfony/browser-kit": {
+        "version": "v6.0.0"
+    },
     "symfony/cache": {
         "version": "v6.0.0"
     },
@@ -276,6 +279,9 @@
             "bin/console"
         ]
     },
+    "symfony/css-selector": {
+        "version": "v6.0.0"
+    },
     "symfony/dependency-injection": {
         "version": "v6.0.0"
     },
@@ -283,6 +289,9 @@
         "version": "v3.0.0"
     },
     "symfony/doctrine-bridge": {
+        "version": "v6.0.0"
+    },
+    "symfony/dom-crawler": {
         "version": "v6.0.0"
     },
     "symfony/dotenv": {
