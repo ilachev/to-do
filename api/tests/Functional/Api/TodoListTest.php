@@ -28,6 +28,8 @@ class TodoListTest extends WebTestCase
 
         self::assertIsArray($data);
         self::assertCount(2, $data);
+        self::assertIsArray($data[0]);
+        self::assertCount(4, $data[0]);
     }
 
     public function testAllPost(): void

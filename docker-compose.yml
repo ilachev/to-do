@@ -54,6 +54,7 @@ services:
         environment:
             APP_ENV: dev
             APP_DEBUG: 1
+            PHP_IDE_CONFIG: serverName=API
             DB_HOST: api-postgres
             DB_USER: app
             DB_PASSWORD_FILE: /run/secrets/api_db_password
@@ -105,12 +106,55 @@ services:
         volumes:
             - ./frontend:/app
 
+    api-postgres-backup:
+        build:
+            context: ./api/docker/common
+            dockerfile: postgres-backup/Dockerfile
+        environment:
+            BACKUP_NAME: to-do_api-postgres
+            POSTGRES_HOST: api-postgres
+            POSTGRES_DB: app
+            POSTGRES_USERNAME: app
+            POSTGRES_PASSWORD_FILE: /run/secrets/api_db_password
+            AWS_ACCESS_KEY_ID: storage_app
+            AWS_SECRET_ACCESS_KEY_FILE: /run/secrets/backup_aws_secret_access_key
+            AWS_DEFAULT_REGION: region
+            S3_ENDPOINT: http://backup-storage:9000
+            S3_BUCKET: backup
+        secrets:
+            - api_db_password
+            - backup_aws_secret_access_key
+        command: sh -c 'wait-for-it api-postgres:5432 -t 20 && backup'
+
+    backup-storage:
+        image: minio/minio
+        environment:
+            MINIO_ROOT_USER: storage_app
+            MINIO_ROOT_PASSWORD_FILE: /run/secrets/backup_aws_secret_access_key
+        secrets:
+            - backup_aws_secret_access_key
+        volumes:
+            - backup-storage:/data
+        entrypoint: sh -c 'mkdir -p /data/backup && docker-entrypoint.sh minio server /data --console-address ":80"'
+        networks:
+            - traefik-public
+            - default
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=traefik-public
+            - traefik.http.routers.backup-storage.rule=Host(`backup-storage.localhost`)
+            - traefik.http.routers.backup-storage.entryPoints=http
+            - traefik.http.services.backup-storage.loadBalancer.server.port=80
+
 secrets:
     api_db_password:
         file: ./docker/development/secrets/api_db_password
+    backup_aws_secret_access_key:
+        file: ./docker/development/secrets/backup_aws_secret_access_key
 
 volumes:
     api-postgres:
+    backup-storage:
 
 networks:
     traefik-public:

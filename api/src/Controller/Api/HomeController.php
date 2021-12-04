@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('', name: 'home', methods: ['GET'])]
+    #[Route(path: '', name: 'home', methods: ['GET'])]
     public function home(): Response
     {
         return $this->json([

@@ -15,7 +15,7 @@ class TodoListController extends AbstractController
         private TodoListRepositoryInterface $todoListRepository
     ) {}
 
-    #[Route('/todo-lists', name: 'todo.lists', methods: ['GET'])]
+    #[Route(path: '/todo-lists', name: 'todo.lists', methods: ['GET'])]
     public function all(): Response
     {
         return $this->json($this->todoListRepository->getAll());
