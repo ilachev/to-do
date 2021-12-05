@@ -51,6 +51,7 @@ services:
         build:
             context: api/docker
             dockerfile: development/php-cli/Dockerfile
+            target: base_image
         environment:
             APP_ENV: dev
             APP_DEBUG: 1
