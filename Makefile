@@ -30,6 +30,9 @@ docker-build:
 push-dev-cache:
 	docker-compose push
 
+push-dev-cache:
+	docker-compose push
+
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/*'
 
