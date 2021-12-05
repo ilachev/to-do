@@ -42,7 +42,7 @@ api-permissions:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var/cache var/log var/test bin/console
 
 api-composer-install:
-	docker-compose run --rm api-php-cli composer install ls -la
+	docker-compose run --rm api-php-cli composer install ls
 
 api-composer-update:
 	docker-compose run --rm api-php-cli composer update
