@@ -24,5 +24,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --fil
 RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
 
 WORKDIR /app
+RUN chmod -R 775  /app/vendor/
+RUN chown -R $USER:$USER /app/vendor/
 
 USER app
