@@ -40,6 +40,7 @@ api-init: api-permissions api-composer-install api-wait-db api-migrations api-fi
 
 api-permissions:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 .
+	docker run --rm -v ${PWD}/api:/app -w /app alpine chown ${USER}:${USER} .
 
 api-composer-install:
 	docker-compose run --rm api-php-cli composer install
