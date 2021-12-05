@@ -3,8 +3,8 @@ name: Pipeline
 on: push
 
 env:
-  REGISTRY: docker.pkg.github.com/impfou/to-do
-  REGISTRY_HOST: docker.pkg.github.com
+  REGISTRY: ghcr.io/impfou/to-do
+  REGISTRY_HOST: ghcr.io
 
 jobs:
   build:
