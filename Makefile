@@ -36,10 +36,10 @@ api-clear:
 api-init: api-permissions api-composer-install api-wait-db api-migrations api-fixtures
 
 api-permissions:
-	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 var/cache var/log var/test bin/console
+	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod 777 .
 
 api-composer-install:
-	docker-compose run --rm api-php-cli ls -la
+	docker-compose run --rm api-php-cli composer install
 
 api-composer-update:
 	docker-compose run --rm api-php-cli composer update
