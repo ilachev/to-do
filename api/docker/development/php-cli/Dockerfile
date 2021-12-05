@@ -1,35 +1,41 @@
-FROM php:8.0-cli-alpine as base_image
+FROM php:7.4-cli-alpine AS builder
 
-ENV XDEBUG_VERSION 3.1.1
-
-RUN apk add --no-cache postgresql-dev bash coreutils git \
+RUN apk add --no-cache postgresql-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && git clone --branch $XDEBUG_VERSION --depth 1 https://github.com/xdebug/xdebug.git /usr/src/php/ext/xdebug \
-    && docker-php-ext-configure xdebug --enable-xdebug-dev \
-    && docker-php-ext-install pdo_pgsql xdebug \
-    && apk del git
+    && docker-php-ext-install pdo_pgsql opcache
 
 RUN apk add --no-cache unzip
 
-RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
-COPY ./common/php/conf.d /usr/local/etc/php/conf.d
-COPY ./development/php/conf.d /usr/local/etc/php/conf.d
-
-COPY ./common/wait-for-it.sh /usr/local/bin/wait-for-it
-RUN chmod 555 /usr/local/bin/wait-for-it
-
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
-
-RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet \
+    && composer global require hirak/prestissimo --no-plugins --no-scripts \
+    && rm -rf /root/.composer/cache
 
 WORKDIR /app
-
-USER app
-
-FROM base_image as test_image
 
 COPY ./composer.json ./composer.lock ./
 
 RUN composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader \
     && rm -rf /root/.composer/cache
+
+### CLI ###
+
+FROM php:7.4-cli-alpine
+
+RUN apk add --no-cache postgresql-dev bash coreutils \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo_pgsql opcache
+
+RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+
+COPY ./docker/common/php/conf.d /usr/local/etc/php/conf.d
+COPY ./docker/testing/php/conf.d /usr/local/etc/php/conf.d
+
+COPY ./docker/common/wait-for-it.sh /usr/local/bin/wait-for-it
+RUN chmod 555 /usr/local/bin/wait-for-it
+
+WORKDIR /app
+
+COPY --from=builder /app ./
+COPY ./ ./
