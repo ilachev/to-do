@@ -22,4 +22,6 @@ RUN chmod 555 /usr/local/bin/wait-for-it
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
 
 WORKDIR /app
+RUN chmod -R 775  /app/vendor/
+RUN chown -R $USER:$USER /app/vendor/
 
