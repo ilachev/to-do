@@ -12,13 +12,11 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: docker:stable
-      volumes:
-        # Mount the docker sock for host's docker engine to be usable inside container
-        - /var/run/docker.sock:/var/run/docker.sock
 
     steps:
+      -   run: ./svc.sh install
+      -   run: ./svc.sh start
+
       -   uses: actions/checkout@v2
 
       -   name: Cache API composer
