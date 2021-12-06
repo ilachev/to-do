@@ -1,6 +1,7 @@
 FROM php:8.0-cli-alpine
 
 ENV XDEBUG_VERSION 3.1.1
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apk add --no-cache postgresql-dev bash coreutils git \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
