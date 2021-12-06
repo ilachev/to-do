@@ -17,12 +17,9 @@ services:
             - traefik.docker.network=traefik-public
 
     api:
-        image: ${REGISTRY:-localhost}/to-do-dev-api:cache
         build:
             context: api/docker
             dockerfile: development/nginx/Dockerfile
-            cache_from:
-                -   ${REGISTRY:-localhost}/to-do-dev-api:cache
         volumes:
             - ./api:/app
         networks:
@@ -36,12 +33,9 @@ services:
             - traefik.http.services.api.loadBalancer.server.port=80
 
     api-php-fpm:
-        image: ${REGISTRY:-localhost}/to-do-dev-api-php-fpm:cache
         build:
             context: api/docker
             dockerfile: development/php-fpm/Dockerfile
-            cache_from:
-                -   ${REGISTRY:-localhost}/to-do-dev-api-php-fpm:cache
         environment:
             APP_ENV: dev
             APP_DEBUG: 1
@@ -54,12 +48,9 @@ services:
             - ./api:/app
 
     api-php-cli:
-        image: ${REGISTRY:-localhost}/to-do-dev-api-php-cli:cache
         build:
             context: api/docker
             dockerfile: development/php-cli/Dockerfile
-            cache_from:
-                -   ${REGISTRY:-localhost}/to-do-dev-api-php-cli:cache
         environment:
             APP_ENV: dev
             APP_DEBUG: 1
@@ -85,11 +76,8 @@ services:
             - "5432:5432"
 
     frontend:
-        image: ${REGISTRY:-localhost}/to-do-dev-frontend:cache
         build:
             context: frontend/docker/development/nginx
-            cache_from:
-                -   ${REGISTRY:-localhost}/to-do-dev-frontend:cache
         networks:
             - traefik-public
             - default
@@ -105,32 +93,23 @@ services:
             - traefik.http.routers.frontend.middlewares=frontend-redirect
 
     frontend-node:
-        image: ${REGISTRY:-localhost}/to-do-dev-frontend-node:cache
         build:
             context: frontend/docker/development/node
-            cache_from:
-                -   ${REGISTRY:-localhost}/to-do-dev-frontend-node:cache
         volumes:
             - ./frontend:/app
         command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && yarn serve -- --port 3000"
         tty: true
 
     frontend-node-cli:
-        image: ${REGISTRY:-localhost}/to-do-dev-frontend-node-cli:cache
         build:
             context: frontend/docker/development/node
-            cache_from:
-                -   ${REGISTRY:-localhost}/to-do-dev-frontend-node-cli:cache
         volumes:
             - ./frontend:/app
 
     api-postgres-backup:
-        image: ${REGISTRY:-localhost}/to-do-dev-api-postgres-backup:cache
         build:
             context: ./api/docker/common
             dockerfile: postgres-backup/Dockerfile
-            cache_from:
-                -   ${REGISTRY:-localhost}/to-do-dev-api-postgres-backup:cache
         environment:
             BACKUP_NAME: to-do_api-postgres
             POSTGRES_HOST: api-postgres
