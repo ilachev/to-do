@@ -14,46 +14,58 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      -   uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      -   name: Cache API composer
-          uses: actions/cache@v2
-          with:
-            path: api/vendor
-            key: api-composer-${{ hashFiles('api/composer.lock') }}
+      - name: Cache API composer
+        uses: actions/cache@v2
+        with:
+          path: api/vendor
+          key: api-composer-${{ hashFiles('api/composer.lock') }}
 
-      -   name: Cache frontend yarn
-          uses: actions/cache@v2
-          with:
-            path: frontend/node_modules
-            key: frontend-yarn-${{ hashFiles('frontend/yarn.lock') }}
+      - name: Cache frontend yarn
+        uses: actions/cache@v2
+        with:
+          path: frontend/node_modules
+          key: frontend-yarn-${{ hashFiles('frontend/yarn.lock') }}
 
-      -   name: Docker login
-          uses: azure/docker-login@v1
-          with:
-            login-server: ${{ env.REGISTRY_HOST }}
-            username: impfou
-            password: ${{ github.token }}
+      - name: Docker login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.REGISTRY_HOST }}
+          username: impfou
+          password: ${{ github.token }}
 
-      -   name: Dev Init
-          run: make init
+      - name: Dev Init
+        run: make init
 
-      -   name: Push dev cache images
-          run: make push-dev-cache
+      - name: Push dev cache images
+        run: make push-dev-cache
 
-      -   name: Analyze API
-          run: make api-analyze
+      - name: Analyze API
+        run: make api-analyze
 
-      -   name: Test API
-          id: api-test
-          run: make api-test
+      - name: Test API
+        id: api-test
+        run: make api-test
 
-      -   name: Archive tests output
-          uses: actions/upload-artifact@v1
-          with:
-            name: test-output
-            path: api/var/log
-          if: ${{ always() && steps.api-test.outcome == 'failure' }}
+      - name: Archive tests output
+        uses: actions/upload-artifact@v1
+        with:
+          name: test-output
+          path: api/var/log
+        if: ${{ always() && steps.api-test.outcome == 'failure' }}
 
-      -   name: Dev Down
-          run: make docker-down-clear
+      - name: Dev Down
+        run: make docker-down-clear
+
+      - name: Inject branch slug
+        uses: rlespinasse/github-slug-action@v2.x
+
+      - name: Set image tag
+        run: echo "::set-env name=IMAGE_TAG::${{ env.GITHUB_REF_SLUG }}-${GITHUB_RUN_NUMBER}"
+
+      - name: Build
+        run: make build
+
+      - name: Push builded images
+        run: make push

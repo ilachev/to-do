@@ -81,3 +81,33 @@ frontend-yarn-upgrade:
 
 frontend-ready:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
+
+build: build-api build-frontend
+
+build-frontend:
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+    --tag ${REGISTRY}/to-do-frontend:${IMAGE_TAG} \
+	--file frontend/docker/development/nginx/Dockerfile frontend
+
+build-api:
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+	--tag ${REGISTRY}/to-do-api:${IMAGE_TAG} \
+	--file api/docker/development/nginx/Dockerfile api
+
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+	--tag ${REGISTRY}/to-do-api-php-fpm:${IMAGE_TAG} \
+	--file api/docker/development/php-fpm/Dockerfile api
+
+	DOCKER_BUILDKIT=1 docker --log-level=debug build --pull --build-arg BUILDKIT_INLINE_CACHE=1 \
+	--tag ${REGISTRY}/to-do-api-php-cli:${IMAGE_TAG} \
+	--file api/docker/development/php-cli/Dockerfile api
+
+push: push-api push-frontend
+
+push-frontend:
+	docker push ${REGISTRY}/to-do-frontend:${IMAGE_TAG}
+
+push-api:
+	docker push ${REGISTRY}/to-do-api:${IMAGE_TAG}
+	docker push ${REGISTRY}/to-do-api-php-fpm:${IMAGE_TAG}
+	docker push ${REGISTRY}/to-do-api-php-cli:${IMAGE_TAG}
