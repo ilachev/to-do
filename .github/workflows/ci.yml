@@ -14,10 +14,6 @@ jobs:
       volumes:
         # Mount the docker sock for host's docker engine to be usable inside container
         - /var/run/docker.sock:/var/run/docker.sock
-    defaults:
-      run:
-        # Force sh since bash is not supported in docker:stable
-        shell: sh
 
     steps:
       -   uses: actions/checkout@v2
