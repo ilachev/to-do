@@ -6,6 +6,9 @@ init-ci: docker-down-clear \
 up: docker-up
 down: docker-down
 restart: down up
+check: analyze
+analyze: api-analyze
+test: api-test
 
 update-deps: api-composer-update frontend-yarn-upgrade restart
 
@@ -22,7 +25,10 @@ docker-pull:
 	docker-compose pull
 
 docker-build:
-	docker-compose build --pull
+	DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1 --pull
+
+push-dev-cache:
+	docker-compose push
 
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/*'
@@ -52,6 +58,12 @@ api-migrations-diff:
 
 api-backup:
 	docker-compose run --rm api-postgres-backup
+
+api-analyze:
+	docker-compose run --rm api-php-cli composer psalm
+
+api-test:
+	docker-compose run --rm api-php-cli composer test
 
 frontend-clear:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf .ready build'
