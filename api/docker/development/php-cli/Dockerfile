@@ -1,7 +1,6 @@
 FROM php:8.0-cli-alpine
 
 ENV XDEBUG_VERSION 3.1.1
-ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apk add --no-cache postgresql-dev bash coreutils git \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
@@ -20,10 +19,11 @@ COPY ./development/php/conf.d /usr/local/etc/php/conf.d
 COPY ./common/wait-for-it.sh /usr/local/bin/wait-for-it
 RUN chmod 555 /usr/local/bin/wait-for-it
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
-RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet \
+    && composer global require hirak/prestissimo --no-plugins --no-scripts \
+    && rm -rf /root/.composer/cache
 
 WORKDIR /app
 
-USER app
