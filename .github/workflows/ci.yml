@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      -   run: ./svc.sh install
-      -   run: ./svc.sh start
-
       -   uses: actions/checkout@v2
 
       -   name: Cache API composer
