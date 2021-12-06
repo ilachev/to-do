@@ -1,6 +1,9 @@
 name: Pipeline
 
-on: push
+on:
+  pull_request:
+    branches:
+      - master
 
 env:
   REGISTRY: ghcr.io/impfou/to-do
