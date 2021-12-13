@@ -1,6 +1,9 @@
 name: "Automatic Releases"
 
 on:
+  milestone:
+    types:
+      - "closed"
   workflow_call:
     inputs:
       use-next-minor-as-default-branch:
