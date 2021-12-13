@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -15,11 +16,11 @@ use Symfony\Component\Uid\Ulid;
 /** @psalm-suppress PropertyNotSetInConstructor */
 #[ORM\Entity]
 #[ORM\Table(name: 'app_todo_lists')]
-class TodoList
+final class TodoList
 {
     #[ORM\Id]
     #[ORM\Column(type: 'ulid', unique: true)]
-    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     private Ulid $id;
 
@@ -27,9 +28,9 @@ class TodoList
     private string $title;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private \DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
-    #[ORM\OneToMany(mappedBy: "list", targetEntity: TodoItem::class)]
+    #[ORM\OneToMany(mappedBy: 'list', targetEntity: TodoItem::class)]
     private Collection $items;
 
     #[Pure]
@@ -62,12 +63,12 @@ class TodoList
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 

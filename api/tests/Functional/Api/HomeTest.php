@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Api;
 
+use JsonException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class HomeTest extends WebTestCase
+/**
+ * @internal
+ */
+final class HomeTest extends WebTestCase
 {
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function testGet(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/api/');
 
@@ -30,13 +34,13 @@ class HomeTest extends WebTestCase
 
         self::assertEquals([
             'name' => 'JSON API',
-            'version' => '1.0'
+            'version' => '1.0',
         ], $data);
     }
 
     public function testPost(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('POST', '/api/');
 
