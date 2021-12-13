@@ -6,6 +6,10 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "scripts": {
+    "php-cs-fixer-fix": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes",
+    "php-cs-fixer-check": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --dry-run --diff",
+    "php-cs-fixer-fix-entity": "php-cs-fixer fix --config=.php-cs-fixer.entity.php --allow-risky=yes",
+    "php-cs-fixer-check-entity": "php-cs-fixer fix --config=.php-cs-fixer.entity.php --allow-risky=yes --dry-run --diff",
     "psalm": "psalm --config=psalm.xml",
     "test": "phpunit --colors=always",
     "test-coverage": "XDEBUG_MODE=coverage phpunit --colors=always --coverage-html var/test/coverage",
@@ -37,6 +41,7 @@
     "dama/doctrine-test-bundle": "^6.7",
     "doctrine/doctrine-fixtures-bundle": "^3.4",
     "fakerphp/faker": "*",
+    "friendsofphp/php-cs-fixer": "^3.4",
     "jetbrains/phpstorm-attributes": "^1.0",
     "phpunit/phpunit": "^9.5",
     "psalm/plugin-phpunit": "^0.16.1",

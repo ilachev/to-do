@@ -6,11 +6,15 @@ namespace App\Tests\Unit\Entity;
 
 use App\Entity\TodoItem;
 use App\Entity\TodoList;
+use DateTimeImmutable;
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
-class TodoItemTest extends TestCase
+/**
+ * @internal
+ */
+final class TodoItemTest extends TestCase
 {
     public function testGetSetId(): void
     {
@@ -42,7 +46,7 @@ class TodoItemTest extends TestCase
     public function testGetSetCreatedAt(): void
     {
         $todoItem = new TodoItem();
-        $createdAt = new \DateTimeImmutable();
+        $createdAt = new DateTimeImmutable();
 
         self::assertEquals($todoItem, $todoItem->setCreatedAt($createdAt));
         self::assertEquals($createdAt, $todoItem->getCreatedAt());

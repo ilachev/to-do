@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Api;
 
+use JsonException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class TodoListTest extends WebTestCase
+/**
+ * @internal
+ */
+final class TodoListTest extends WebTestCase
 {
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function testAllGet(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/api/todo-lists');
 
@@ -34,7 +38,7 @@ class TodoListTest extends WebTestCase
 
     public function testAllPost(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('POST', '/api/todo-lists');
 

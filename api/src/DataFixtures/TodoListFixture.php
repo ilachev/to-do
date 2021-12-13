@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\TodoList;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
-class TodoListFixture extends Fixture
+final class TodoListFixture extends Fixture
 {
     public const REFERENCE_TODO_LIST_FIRST = 'todo_list_first_ref';
     public const REFERENCE_TODO_LIST_SECOND = 'todo_list_second_ref';
@@ -19,13 +20,11 @@ class TodoListFixture extends Fixture
         $faker = Factory::create();
 
         $todoListFirst = (new TodoList())
-            ->setCreatedAt(new \DateTimeImmutable())
-            ->setTitle($faker->name('male'))
-        ;
+            ->setCreatedAt(new DateTimeImmutable())
+            ->setTitle($faker->name('male'));
         $todoListSecond = (new TodoList())
-            ->setCreatedAt(new \DateTimeImmutable())
-            ->setTitle($faker->name('female'))
-        ;
+            ->setCreatedAt(new DateTimeImmutable())
+            ->setTitle($faker->name('female'));
 
         $manager->persist($todoListFirst);
         $manager->persist($todoListSecond);

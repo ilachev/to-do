@@ -6,12 +6,13 @@ namespace App\DataFixtures;
 
 use App\Entity\TodoItem;
 use App\Entity\TodoList;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
-class TodoItemFixture extends Fixture implements DependentFixtureInterface
+final class TodoItemFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -22,21 +23,19 @@ class TodoItemFixture extends Fixture implements DependentFixtureInterface
         /** @var TodoList $todoListSecond */
         $todoListSecond = $this->getReference(TodoListFixture::REFERENCE_TODO_LIST_SECOND);
 
-        for ($i = 0; $i <= 15; $i++) {
+        for ($i = 0; $i <= 15; ++$i) {
             $todoItem = (new TodoItem())
-                ->setCreatedAt(new \DateTimeImmutable())
+                ->setCreatedAt(new DateTimeImmutable())
                 ->setList($todoListFirst)
-                ->setDescription($faker->text(50))
-            ;
+                ->setDescription($faker->text(50));
             $manager->persist($todoItem);
         }
 
-        for ($i = 0; $i <= 10; $i++) {
+        for ($i = 0; $i <= 10; ++$i) {
             $todoItem = (new TodoItem())
-                ->setCreatedAt(new \DateTimeImmutable())
+                ->setCreatedAt(new DateTimeImmutable())
                 ->setList($todoListSecond)
-                ->setDescription($faker->text(50))
-            ;
+                ->setDescription($faker->text(50));
             $manager->persist($todoItem);
         }
 

@@ -65,6 +65,10 @@ api-analyze:
 api-test:
 	docker-compose run --rm api-php-cli composer test
 
+api-lint:
+	docker-compose run --rm api-php-cli composer php-cs-fixer-check
+	docker-compose run --rm api-php-cli composer php-cs-fixer-check-entity
+
 frontend-clear:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf .ready build'
 
