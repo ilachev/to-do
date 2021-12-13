@@ -16,7 +16,7 @@ use Symfony\Component\Uid\Ulid;
 /** @psalm-suppress PropertyNotSetInConstructor */
 #[ORM\Entity]
 #[ORM\Table(name: 'app_todo_lists')]
-final class TodoList
+class TodoList
 {
     #[ORM\Id]
     #[ORM\Column(type: 'ulid', unique: true)]

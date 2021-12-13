@@ -13,7 +13,7 @@ use Symfony\Component\Uid\Ulid;
 /** @psalm-suppress MissingConstructor */
 #[ORM\Entity]
 #[ORM\Table(name: 'app_todo_items')]
-final class TodoItem
+class TodoItem
 {
     #[ORM\Id]
     #[ORM\Column(type: 'ulid', unique: true)]

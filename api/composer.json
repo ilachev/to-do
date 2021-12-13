@@ -6,8 +6,10 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "scripts": {
-    "php-cs-fixer-fix": "php-cs-fixer fix --allow-risky=yes",
-    "php-cs-fixer-check": "php-cs-fixer fix --allow-risky=yes --dry-run --diff",
+    "php-cs-fixer-fix": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes",
+    "php-cs-fixer-check": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --dry-run --diff",
+    "php-cs-fixer-fix-entity": "php-cs-fixer fix --config=.php-cs-fixer.entity.php --allow-risky=yes",
+    "php-cs-fixer-check-entity": "php-cs-fixer fix --config=.php-cs-fixer.entity.php --allow-risky=yes --dry-run --diff",
     "psalm": "psalm --config=psalm.xml",
     "test": "phpunit --colors=always",
     "test-coverage": "XDEBUG_MODE=coverage phpunit --colors=always --coverage-html var/test/coverage",
