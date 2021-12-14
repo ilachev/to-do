@@ -18,7 +18,8 @@ Pick the target branch based according to these criteria:
 | Q           | A      |
 |-------------|--------|
 | New Feature | yes    |
-| BC Break    | yes/no |
+| Backend     | yes/no |
+| Frontend    | yes/no |
 
 #### Summary
 

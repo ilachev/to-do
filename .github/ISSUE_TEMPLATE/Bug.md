@@ -9,8 +9,9 @@ about: Something is broken? 🔨
 
 | Q        | A      |
 |----------|--------|
-| BC Break | yes/no |
 | Version  | x.y.z  |
+| Backend  | yes/no |
+| Frontend | yes/no |
 
 #### Summary
 
