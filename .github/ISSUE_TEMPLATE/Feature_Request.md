@@ -10,7 +10,8 @@ about: You have a neat idea that should be implemented? 🎩
 | Q           | A      |
 |-------------|--------|
 | New Feature | yes    |
-| BC Break    | yes/no |
+| Backend     | yes/no |
+| Frontend    | yes/no |
 
 #### Summary
 

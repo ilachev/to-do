@@ -9,7 +9,8 @@ about: You found a bug and have a failing Unit or Functional test? 🔨
 
 | Q        | A      |
 |----------|--------|
-| BC Break | yes/no |
+| Backend  | yes/no |
+| Frontend | yes/no |
 | Version  | x.y.z  |
 
 #### Summary
